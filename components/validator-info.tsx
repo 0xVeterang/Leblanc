@@ -1,6 +1,16 @@
 "use client";
 import Web3 from "web3";
+import Link from "next/link";
 import { useState, useEffect } from "react";
+import {
+  Table,
+  Thead,
+  Tbody,
+  Tr,
+  Th,
+  Td,
+  TableContainer,
+} from "@chakra-ui/react";
 import BfcStakingABI from "../abi/bfc_staking.json";
 
 interface EthereumWindow extends Window {
@@ -9,12 +19,11 @@ interface EthereumWindow extends Window {
 
 declare let window: EthereumWindow;
 
-// BigInt를 문자열로 변환하는 함수
 function handleBigInt(obj: any) {
   if (typeof obj === "bigint") {
-    return obj.toString(); // BigInt를 문자열로 변환
+    return obj.toString();
   } else if (Array.isArray(obj)) {
-    return obj.map(handleBigInt); // 배열일 경우 재귀적으로 처리
+    return obj.map(handleBigInt);
   } else if (typeof obj === "object" && obj !== null) {
     return Object.fromEntries(
       Object.entries(obj).map(([key, value]) => [key, handleBigInt(value)])
@@ -65,7 +74,6 @@ export default function ValidatorInfo() {
           const result = await contract.methods.candidate_states(tier).call();
           console.log("Raw Result: ", result);
 
-          // BigInt 변환 후 저장
           const processedResult = handleBigInt(result);
           console.log("Processed Result: ", processedResult);
           setOutputData(processedResult);
@@ -84,33 +92,50 @@ export default function ValidatorInfo() {
 
   return (
     <div>
-      <h1>MetaMask Connection Test</h1>
       {web3 ? (
         <div>
           <p>Connected Account: {accounts.join(", ")}</p>
           {isLoading ? (
             <p>Loading...</p>
           ) : (
-            <div>
-              {Object.keys(outputData).length > 0 ? (
-                Object.keys(outputData).map((key: string) => (
-                  <div key={key}>
-                    <h3>Array {key}</h3>
-                    {Array.isArray(outputData[key]) ? (
-                      outputData[key].map(
-                        (innerData: any, innerIndex: number) => (
-                          <p key={innerIndex}>{JSON.stringify(innerData)}</p>
-                        )
-                      )
-                    ) : (
-                      <p>No data available for key {key}</p>
-                    )}
-                  </div>
-                ))
-              ) : (
-                <p>No data available</p>
-              )}
-            </div>
+            <TableContainer>
+              <Table variant="simple">
+                <Thead>
+                  <Tr>
+                    <Th>Index</Th>
+                    {[...Array(20)].map((_, index) => (
+                      <Th key={index}>Array {index}</Th>
+                    ))}
+                  </Tr>
+                </Thead>
+                <Tbody>
+                  {Array.isArray(outputData[0]) &&
+                    outputData[0].map((_, rowIndex: number) => (
+                      <Tr key={rowIndex}>
+                        <Td>{rowIndex + 1}</Td>
+                        {[...Array(20)].map((_, colIndex) => (
+                          <Td key={colIndex}>
+                            {colIndex === 0 ? (
+                              <Link
+                                href={`/nominator/${outputData[colIndex][rowIndex]}`}
+                              >
+                                {outputData[colIndex][rowIndex]
+                                  ? outputData[colIndex][rowIndex].toString()
+                                  : "-"}
+                              </Link>
+                            ) : outputData[colIndex] &&
+                              outputData[colIndex][rowIndex] ? (
+                              outputData[colIndex][rowIndex].toString()
+                            ) : (
+                              "-"
+                            )}
+                          </Td>
+                        ))}
+                      </Tr>
+                    ))}
+                </Tbody>
+              </Table>
+            </TableContainer>
           )}
         </div>
       ) : (

@@ -4,10 +4,10 @@ import { ChakraProvider, Container } from "@chakra-ui/react";
 
 export const metadata: Metadata = {
   title: {
-    template: "%s | Cool ",
+    template: "%s",
     default: "Loading...",
   },
-  description: "What is this project?",
+  description: "Project LeBlanc",
 };
 
 export default function Layout({ children }: { children: React.ReactNode }) {
@@ -15,8 +15,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     <html lang="en">
       <body>
         <ChakraProvider>
+          <Navigation />
           <Container maxW="container.lg" py={4}>
-            <Navigation />
             {children}
           </Container>
         </ChakraProvider>

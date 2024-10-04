@@ -4,7 +4,7 @@ import { Suspense } from "react";
 import ValidatorInfo from "../../components/validator-info";
 
 export const metadata = {
-  title: "Home",
+  title: "LeBlanc",
 };
 
 export const API_URL = "test";

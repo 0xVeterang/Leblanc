@@ -323,102 +323,102 @@
     "outputs": [
       {
         "internalType": "address[]",
-        "name": "",
+        "name": "candidates",
         "type": "address[]"
       },
       {
         "internalType": "address[]",
-        "name": "",
+        "name": "stashes",
         "type": "address[]"
       },
       {
         "internalType": "uint256[]",
-        "name": "",
+        "name": "bonds",
         "type": "uint256[]"
       },
       {
         "internalType": "uint256[]",
-        "name": "",
+        "name": "initial_bonds",
         "type": "uint256[]"
       },
       {
         "internalType": "uint256[]",
-        "name": "",
+        "name": "nominations_counts",
         "type": "uint256[]"
       },
       {
         "internalType": "uint256[]",
-        "name": "",
+        "name": "voting_powers",
         "type": "uint256[]"
       },
       {
         "internalType": "uint256[]",
-        "name": "",
+        "name": "lowest_top_nomination_amounts",
         "type": "uint256[]"
       },
       {
         "internalType": "uint256[]",
-        "name": "",
+        "name": "highest_bottom_nomination_amounts",
         "type": "uint256[]"
       },
       {
         "internalType": "uint256[]",
-        "name": "",
+        "name": "lowest_bottom_nomination_amounts",
         "type": "uint256[]"
       },
       {
         "internalType": "uint256[]",
-        "name": "",
+        "name": "top_capacities",
         "type": "uint256[]"
       },
       {
         "internalType": "uint256[]",
-        "name": "",
+        "name": "bottom_capacities",
         "type": "uint256[]"
       },
       {
         "internalType": "uint256[]",
-        "name": "",
+        "name": "status",
         "type": "uint256[]"
       },
       {
         "internalType": "bool[]",
-        "name": "",
+        "name": "is_selected",
         "type": "bool[]"
       },
       {
         "internalType": "uint256[]",
-        "name": "",
+        "name": "commissions",
         "type": "uint256[]"
       },
       {
         "internalType": "uint256[]",
-        "name": "",
+        "name": "last_blocks",
         "type": "uint256[]"
       },
       {
         "internalType": "uint256[]",
-        "name": "",
+        "name": "blocks_produced",
         "type": "uint256[]"
       },
       {
         "internalType": "uint256[]",
-        "name": "",
+        "name": "productivity",
         "type": "uint256[]"
       },
       {
         "internalType": "uint256[]",
-        "name": "",
+        "name": "reward_dst",
         "type": "uint256[]"
       },
       {
         "internalType": "uint256[]",
-        "name": "",
+        "name": "awarded_tokens",
         "type": "uint256[]"
       },
       {
         "internalType": "uint256[]",
-        "name": "",
+        "name": "tiers",
         "type": "uint256[]"
       }
     ],
