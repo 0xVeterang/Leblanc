@@ -16,12 +16,29 @@ import BfcStakingABI from "../abi/bfc_staking.json";
 interface EthereumWindow extends Window {
   ethereum?: any;
 }
+// `candidate_state`의 components에서 `name` 추출
+const extractColumnNames = () => {
+  const abiItem = BfcStakingABI.find((item) => item.name === "candidate_state");
+
+  if (!abiItem || !abiItem.outputs || !abiItem.outputs[0].components) {
+    return [];
+  }
+
+  return abiItem.outputs[0].components.map((component: any) => component.name);
+};
+
+// 추출된 column 이름 사용
+const columnLabels = extractColumnNames();
 
 declare let window: EthereumWindow;
 
 function handleBigInt(obj: any) {
   if (typeof obj === "bigint") {
-    return obj.toString();
+    // BigInt를 문자열로 변환하고 뒤에서 18자리 삭제
+    const bigIntStr = obj.toString();
+    const shortenedStr =
+      bigIntStr.length > 18 ? bigIntStr.slice(0, -18) : bigIntStr; // 마지막 18자리 제거
+    return shortenedStr || "0"; // 만약 제거한 결과가 빈 문자열이면 0을 반환
   } else if (Array.isArray(obj)) {
     return obj.map(handleBigInt);
   } else if (typeof obj === "object" && obj !== null) {
@@ -94,7 +111,6 @@ export default function ValidatorInfo() {
     <div>
       {web3 ? (
         <div>
-          <p>Connected Account: {accounts.join(", ")}</p>
           {isLoading ? (
             <p>Loading...</p>
           ) : (
@@ -103,8 +119,8 @@ export default function ValidatorInfo() {
                 <Thead>
                   <Tr>
                     <Th>Index</Th>
-                    {[...Array(20)].map((_, index) => (
-                      <Th key={index}>Array {index}</Th>
+                    {columnLabels.map((label, index) => (
+                      <Th key={index}>{label}</Th>
                     ))}
                   </Tr>
                 </Thead>

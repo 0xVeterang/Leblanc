@@ -37,7 +37,7 @@ export default function Navigation() {
                 bg={path === "/" ? "blue.500" : "transparent"}
                 color={path === "/" ? "white" : "black"}
               >
-                Home {path === "/" ? "🔥" : ""}
+                Home
               </Box>
             </Link>
           </ListItem>
@@ -50,15 +50,13 @@ export default function Navigation() {
                 bg={path === "/about-us" ? "blue.500" : "transparent"}
                 color={path === "/about-us" ? "white" : "black"}
               >
-                About Us {path === "/about-us" ? "🔥" : ""}
+                About Us
               </Box>
             </Link>
           </ListItem>
 
           <ListItem>
-            <Box p={2} borderRadius="md" bg="blue.500" color="black">
-              <ConnectWallet />
-            </Box>
+            <ConnectWallet />
           </ListItem>
         </UnorderedList>
       </Container>

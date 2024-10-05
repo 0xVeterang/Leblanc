@@ -3,6 +3,19 @@
 "use client"; // Next.js에서 클라이언트 사이드에서만 동작하게 하기 위한 설정
 import { useState, useEffect } from "react";
 import Web3 from "web3";
+import {
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
+  MenuItemOption,
+  MenuGroup,
+  MenuOptionGroup,
+  MenuDivider,
+  Button,
+} from "@chakra-ui/react";
+import { ChevronDownIcon } from "@chakra-ui/icons";
+import Image from "next/image"; // Next.js의 Image 컴포넌트 사용
 
 interface EthereumWindow extends Window {
   ethereum?: any;
@@ -50,6 +63,36 @@ export default function ConnectWallet() {
   }, []);
 
   return (
+    <Menu>
+      <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
+        ConnectWallet
+      </MenuButton>
+      <MenuList>
+        <MenuItem onClick={connectWallet}>
+          <Image
+            src="/resources/img/icon-metamask.svg" // 이미지 경로
+            alt="Metamask Icon"
+            width={24} // 아이콘의 너비
+            height={24} // 아이콘의 높이
+            style={{ marginRight: "8px" }} // 텍스트와의 간격 조정
+          />
+          Metamask
+        </MenuItem>
+        <MenuItem>
+          <Image
+            src="/resources/img/icon-pockie.svg" // 이미지 경로
+            alt="Metamask Icon"
+            width={24} // 아이콘의 너비
+            height={24} // 아이콘의 높이
+            style={{ marginRight: "8px" }} // 텍스트와의 간격 조정
+          />
+          Pockie
+        </MenuItem>
+      </MenuList>
+    </Menu>
+  );
+  /*
+  return (
     <div>
       {account ? (
         <p>Connected Wallet: {account}</p>
@@ -58,4 +101,5 @@ export default function ConnectWallet() {
       )}
     </div>
   );
+  */
 }
