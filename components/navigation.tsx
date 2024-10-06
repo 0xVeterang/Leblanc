@@ -9,6 +9,7 @@ import {
   Flex,
   Spacer,
   Text,
+  Image,
 } from "@chakra-ui/react";
 import ConnectWallet from "./connect-wallet";
 
@@ -24,7 +25,20 @@ export default function Navigation() {
       >
         {/* 로고를 위한 박스 */}
         <Box fontWeight="bold" fontSize="lg">
-          <Link href="/">My Logo</Link>
+          <Link href="/">
+            <Flex alignItems="center">
+              {" "}
+              {/* Flex 사용으로 수평 정렬 */}
+              <Image
+                src="/resources/img/logo-main.svg" // 이미지 경로
+                alt="Logo Icon"
+                width={12} // 아이콘의 너비
+                height={12} // 아이콘의 높이
+                style={{ marginRight: "8px" }} // 텍스트와의 간격 조정
+              />
+              LeBlanc {/* 텍스트를 이미지 오른쪽에 배치 */}
+            </Flex>
+          </Link>
         </Box>
 
         {/* 내비게이션 리스트 */}

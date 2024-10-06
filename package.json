@@ -10,6 +10,9 @@
     "postcss": "^8.4.38",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "react-force-graph": "^1.44.5",
+    "react-force-graph-3d": "^1.24.4",
+    "three": "^0.169.0",
     "web3": "^4.13.0"
   },
   "name": "leblanc",

@@ -16,7 +16,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       <body>
         <ChakraProvider>
           <Navigation />
-          <Container maxW="container.lg" py={4}>
+          <Container maxW="container.xl" py={4}>
             {children}
           </Container>
         </ChakraProvider>
