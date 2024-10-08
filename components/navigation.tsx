@@ -18,7 +18,7 @@ export default function Navigation() {
   return (
     <Box as="nav" bg="gray.100" p={4} borderRadius="md">
       <Container
-        maxW="container.lg"
+        maxW="container.xl"
         display="flex"
         justifyContent="space-between"
         alignItems="center"
@@ -30,7 +30,7 @@ export default function Navigation() {
               {" "}
               {/* Flex 사용으로 수평 정렬 */}
               <Image
-                src="/resources/img/logo-main.svg" // 이미지 경로
+                src="/resources/img/icon-logo.svg" // 이미지 경로
                 alt="Logo Icon"
                 width={12} // 아이콘의 너비
                 height={12} // 아이콘의 높이
