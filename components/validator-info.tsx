@@ -19,20 +19,6 @@ interface EthereumWindow extends Window {
   ethereum?: any;
 }
 
-// `candidate_state`의 components에서 `name` 추출
-const extractColumnNames = () => {
-  const abiItem = BfcStakingABI.find((item) => item.name === "candidate_state");
-
-  if (!abiItem || !abiItem.outputs || !abiItem.outputs[0].components) {
-    return [];
-  }
-
-  return abiItem.outputs[0].components.map((component: any) => component.name);
-};
-
-// 추출된 column 이름 사용
-const columnLabels = extractColumnNames();
-
 declare let window: EthereumWindow;
 
 function handleBigInt(obj: any) {
@@ -57,6 +43,33 @@ const formatAddress = (address: string) => {
     return address.slice(0, 6) + "...." + address.slice(-4);
   }
   return address;
+};
+
+// ERY 계산 함수
+const calculateERY = (
+  selfStaking: string,
+  nominatedAmount: string,
+  commision: string
+) => {
+  // 문자열을 숫자로 변환
+  const selfStakingNumber = Number(selfStaking);
+  const nominatedAmountNumber = Number(nominatedAmount);
+  const commisionNumber = Number(commision);
+
+  // Total Stake 계산
+  const totalStaked = selfStakingNumber + nominatedAmountNumber;
+
+  // 수수료 반영
+  const commissionFactor = 1 - commisionNumber / 100;
+
+  // 전체 보상률 가정 (이 값은 계산한 방식에 따라 변경될 수 있음)
+  const totalRewardRate = 0.1; // 가정된 보상률, 10%로 설정
+
+  // ERY 계산
+  const ery = commissionFactor * (totalRewardRate / totalStaked) * totalStaked;
+
+  // 결과를 소수점 둘째 자리까지 반환
+  return (ery * 100).toFixed(2);
 };
 
 export default function ValidatorInfo() {
@@ -129,9 +142,13 @@ export default function ValidatorInfo() {
                 <Thead>
                   <Tr>
                     <Th>Index</Th>
-                    {columnLabels.map((label, index) => (
-                      <Th key={index}>{label}</Th>
-                    ))}
+                    <Th>Tier</Th>
+                    <Th>Candidate</Th>
+                    <Th>Voting Power</Th>
+                    <Th>Nomination Count</Th>
+                    <Th>Commission</Th>
+                    <Th>Awarded Tokens</Th>
+                    <Th>ERY</Th>
                   </Tr>
                 </Thead>
                 <Tbody>
@@ -139,41 +156,95 @@ export default function ValidatorInfo() {
                     outputData[0].map((_, rowIndex: number) => (
                       <Tr key={rowIndex}>
                         <Td>{rowIndex + 1}</Td>
-                        {[...Array(20)].map((_, colIndex) => (
-                          <Td key={colIndex}>
-                            {colIndex === 0 ? (
-                              <Tooltip
-                                label={`${outputData[colIndex][rowIndex]}`}
-                                fontSize="md"
-                                placement="top"
+                        {/* tier */}
+                        <Td>
+                          {outputData[19] && outputData[19][rowIndex] == 1
+                            ? "Basic"
+                            : "Full"}
+                        </Td>
+                        {/* candidate */}
+                        <Td>
+                          <Tooltip
+                            label={`${outputData[0][rowIndex]}`}
+                            fontSize="md"
+                            placement="top"
+                          >
+                            <Link
+                              href={`/nominator/${outputData[0][rowIndex]}`}
+                              passHref
+                            >
+                              <Text
+                                as="span"
+                                cursor="pointer"
+                                textDecoration="underline"
                               >
-                                <Link
-                                  href={`/nominator/${outputData[colIndex][rowIndex]}`}
-                                  passHref
-                                >
-                                  <Text
-                                    as="span"
-                                    cursor="pointer"
-                                    textDecoration="underline"
-                                  >
-                                    {outputData[colIndex][rowIndex]
-                                      ? formatAddress(
-                                          outputData[colIndex][
-                                            rowIndex
-                                          ].toString()
-                                        )
-                                      : "-"}
-                                  </Text>
-                                </Link>
-                              </Tooltip>
-                            ) : outputData[colIndex] &&
-                              outputData[colIndex][rowIndex] ? (
-                              outputData[colIndex][rowIndex].toString()
-                            ) : (
-                              "-"
-                            )}
-                          </Td>
-                        ))}
+                                {formatAddress(
+                                  outputData[0][rowIndex].toString()
+                                )}
+                              </Text>
+                            </Link>
+                          </Tooltip>
+                        </Td>
+                        {/* Voting Power (Voting Power - Bond) */}
+                        <Td>
+                          <Tooltip
+                            label={
+                              <div>
+                                <Text>Validator’s self-staking amount: </Text>
+                                <Text>
+                                  {(
+                                    (outputData[2][rowIndex] /
+                                      outputData[5][rowIndex]) *
+                                    100
+                                  ).toFixed(2)}
+                                  % (
+                                  {Number(
+                                    outputData[2][rowIndex]
+                                  ).toLocaleString()}{" "}
+                                  BFC)
+                                </Text>
+                                <Text>Nominated amount: </Text>
+                                <Text>
+                                  {(
+                                    ((outputData[5][rowIndex] -
+                                      outputData[2][rowIndex]) /
+                                      outputData[5][rowIndex]) *
+                                    100
+                                  ).toFixed(2)}
+                                  % (
+                                  {Number(
+                                    outputData[5][rowIndex] -
+                                      outputData[2][rowIndex]
+                                  ).toLocaleString()}{" "}
+                                  BFC)
+                                </Text>
+                              </div>
+                            }
+                            fontSize="md"
+                            placement="top"
+                          >
+                            {/* 기본 Voting Power 표시 */}
+                            {Number(outputData[5][rowIndex]).toLocaleString()}
+                          </Tooltip>
+                          BFC
+                        </Td>
+                        {/* nomination_count */}
+                        <Td>{outputData[4][rowIndex]}</Td>
+                        {/* commission */}
+                        <Td>{outputData[13][rowIndex] / 10000000}%</Td>
+
+                        {/* awarded_tokens */}
+                        <Td>{outputData[18][rowIndex]}</Td>
+
+                        {/* ERY 계산 및 출력 */}
+                        <Td>
+                          {/*calculateERY(
+                            outputData[2][rowIndex],
+                            outputData[5][rowIndex] - outputData[2][rowIndex],
+                            outputData[13][rowIndex] / 10000000
+                          )*/}
+                          ???
+                        </Td>
                       </Tr>
                     ))}
                 </Tbody>
