@@ -1,6 +1,5 @@
 "use client";
 import Web3 from "web3";
-import Link from "next/link";
 import { useState, useEffect } from "react";
 import {
   Table,
@@ -16,31 +15,15 @@ import BfcStakingABI from "../abi/bfc_staking.json";
 interface EthereumWindow extends Window {
   ethereum?: any;
 }
-// `candidate_top_nominations`의 components에서 `name` 추출
-const extractColumnNames = () => {
-  const abiItem = BfcStakingABI.find(
-    (item) => item.name === "candidate_top_nominations"
-  );
-
-  if (!abiItem || !abiItem.outputs || !abiItem.outputs[0].components) {
-    return [];
-  }
-
-  return abiItem.outputs[0].components.map((component: any) => component.name);
-};
-
-// 추출된 column 이름 사용
-const columnLabels = extractColumnNames();
 
 declare let window: EthereumWindow;
 
 function handleBigInt(obj: any) {
   if (typeof obj === "bigint") {
-    // BigInt를 문자열로 변환하고 뒤에서 18자리 삭제
     const bigIntStr = obj.toString();
     const shortenedStr =
-      bigIntStr.length > 18 ? bigIntStr.slice(0, -18) : bigIntStr; // 마지막 18자리 제거
-    return shortenedStr || "0"; // 만약 제거한 결과가 빈 문자열이면 0을 반환
+      bigIntStr.length > 18 ? bigIntStr.slice(0, -18) : bigIntStr;
+    return shortenedStr || "0";
   } else if (Array.isArray(obj)) {
     return obj.map(handleBigInt);
   } else if (typeof obj === "object" && obj !== null) {
@@ -50,7 +33,14 @@ function handleBigInt(obj: any) {
   }
   return obj;
 }
-export default function NominatorInfo({ address_id }: { address_id: string }) {
+
+export default function NominatorInfo({
+  address_id,
+  onDataUpdate, // 부모 컴포넌트에서 전달받은 함수
+}: {
+  address_id: string;
+  onDataUpdate: (data: any) => void; // data를 전달하는 함수 타입 정의
+}) {
   const [accounts, setAccounts] = useState<string[]>([]);
   const [web3, setWeb3] = useState<Web3 | null>(null);
   const [outputData, setOutputData] = useState<any>({});
@@ -98,6 +88,7 @@ export default function NominatorInfo({ address_id }: { address_id: string }) {
             const processedResult = handleBigInt(result);
             console.log("Processed Result: ", processedResult);
             setOutputData(processedResult);
+            onDataUpdate(processedResult); // 부모에게 전달
           } else {
             console.error("Empty result from the contract call");
           }

@@ -2,6 +2,7 @@
 import Web3 from "web3";
 import Link from "next/link";
 import { useState, useEffect } from "react";
+import Loading from "./loading";
 import {
   Table,
   Thead,
@@ -135,7 +136,7 @@ export default function ValidatorInfo() {
       {web3 ? (
         <div>
           {isLoading ? (
-            <p>Loading...</p>
+            <Loading />
           ) : (
             <TableContainer>
               <Table variant="simple">
@@ -253,7 +254,7 @@ export default function ValidatorInfo() {
           )}
         </div>
       ) : (
-        <p>Please install and connect MetaMask.</p>
+        <Loading />
       )}
     </div>
   );

@@ -73,15 +73,11 @@ export function GraphComponent() {
   );
 }
 
-export default function NominatorPage({
-  params: { id },
-}: {
-  params: { id: string };
-}) {
+export default function NominatorPage({ graphData }: { graphData: any }) {
   // JSX로 GraphComponent를 렌더링
+  console.log(graphData);
   return (
     <div>
-      <h1>Nominator ID: {id}</h1>
       <GraphComponent />
     </div>
   );
