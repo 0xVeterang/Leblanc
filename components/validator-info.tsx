@@ -235,7 +235,10 @@ export default function ValidatorInfo() {
                         <Td>{outputData[13][rowIndex] / 10000000}%</Td>
 
                         {/* awarded_tokens */}
-                        <Td>{outputData[18][rowIndex]}</Td>
+                        <Td>
+                          {Number(outputData[18][rowIndex]).toLocaleString()}{" "}
+                          BFC
+                        </Td>
 
                         {/* ERY 계산 및 출력 */}
                         <Td>

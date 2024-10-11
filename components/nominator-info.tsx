@@ -11,6 +11,7 @@ import {
   TableContainer,
 } from "@chakra-ui/react";
 import BfcStakingABI from "../abi/bfc_staking.json";
+import Loading from "./loading";
 
 interface EthereumWindow extends Window {
   ethereum?: any;
@@ -110,7 +111,7 @@ export default function NominatorInfo({
       {web3 ? (
         <div>
           {isLoading ? (
-            <p>Loading...</p>
+            <Loading />
           ) : Object.keys(outputData).length === 0 ? (
             <p>No data available</p>
           ) : (
@@ -139,7 +140,7 @@ export default function NominatorInfo({
           )}
         </div>
       ) : (
-        <p>Please install and connect MetaMask.</p>
+        <Loading />
       )}
     </div>
   );

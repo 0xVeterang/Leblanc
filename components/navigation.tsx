@@ -57,14 +57,14 @@ export default function Navigation() {
           </ListItem>
 
           <ListItem>
-            <Link href="/about-us">
+            <Link href="/bridge">
               <Box
                 p={2}
                 borderRadius="md"
-                bg={path === "/about-us" ? "blue.500" : "transparent"}
-                color={path === "/about-us" ? "white" : "black"}
+                bg={path === "/bridge" ? "blue.500" : "transparent"}
+                color={path === "/bridge" ? "white" : "black"}
               >
-                About Us
+                Bridge
               </Box>
             </Link>
           </ListItem>

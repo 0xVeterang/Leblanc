@@ -1,0 +1,20 @@
+/* styles/globals.css */
+
+body {
+  font-family: var(--chakra-fonts-body);
+  color: var(--chakra-colors-chakra-body-text);
+  background: rgb(26, 26, 26);
+  transition-property: background-color, color, border-color;
+  transition-duration: var(--chakra-transition-duration-normal);
+  line-height: var(--chakra-lineHeights-base);
+  transition-timing-function: ease;
+  -webkit-tap-highlight-color: transparent;
+  font-variant-ligatures: no-contextual;
+}
+
+html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+}
